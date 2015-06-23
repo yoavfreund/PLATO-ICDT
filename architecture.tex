@@ -75,9 +75,13 @@ connect probability distributions back to tables. A random variable is
 a mapping from $\Omega$ to the real numbers (which can be restricted
 to a smaller set, such as the integers). The random variable $X$ connects
 the abstract outcome $\omega \in \Omega$ with the value of a
-particular attribute $X(\omega)$. One natural way to define the
+particular attribute $X(\omega)$.
+\yannisp{The probability theory presented up to this point should be considered already known. YK will eventually condense that part to essentially a listing of the relevant terms. E.g., I assume the relevant ICDT reader is already aware of the axioms of a probability function.} 
+One natural way to define the
 distribution over the table \texttt{Air2(Sensor, X, Y, T, co,
-  no2)} is to see each row as the attributes of a single outcome. In
+  no2)} is to see each row as the attributes of a single outcome. 
+\yannisp{This is one way, where each tuple is an independent outcome. In the more general way, the distribution over functions approach captures the dependency of the tuples. Another choice that troubled me, is whether the S, X, Y, T are drawn Vs they are given. Eg, it is known how many (and which) sensors we have. Let's discuss on Thursday.}
+In
 other words, if the outcome $\omega$ is generated according to the
 distribution $P$, the row in the table would be
 $(\mbox{Sensor}(\omega),X(\omega),Y(\omega),Z(\omega),T(\omega),\mbox{co}(\omega),\mbox{no2}(\omega))$.
