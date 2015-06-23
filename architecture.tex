@@ -1,4 +1,3 @@
-
 \section{Plato: A model-aware DBMS}
 \label{sec:architecture}
 
@@ -18,17 +17,86 @@ Out of these registered learning algorithms, \emph{model administrators} with kn
 
 A Plato database consists of {\em measurements}, {\em metadata} and {\em models}.
 
-\noindent {\bf Single Measurements Table} In the interest of simplicity let us first assume that the database has a single table $T$ with measurements. The table $T$ has {\em dimension attributes} and {\em measurement attributes}. The dimension attributes uniquely identify each tuple.
+\noindent {\bf Single Measurements Table} In the interest of
+simplicity let us first assume that the database has a single table
+$T$ with measurements. The table $T$ has {\em dimension attributes}
+and {\em measurement attributes}. The dimension attributes define the
+time and place where the measurement was taken.
 
-In the case of spatiotemporal sensor data, we further classify the dimension attributes into {\em metadata} attributes and {\em spatiotemporal} attributes. We also assume that the domain of each measurement attribute is the set of reals $R$, or a subset thereof.
+In the case of spatiotemporal sensor data, we further classify the
+dimension attributes into {\em metadata} attributes and {\em
+  spatiotemporal} attributes. We also assume that the domain of each
+measurement attribute is the set of reals $R$.
 
-For example, consider a table \texttt{Air2(Sensor, X, Y, T, co, no2)}. The \texttt{Sensor} is a metadata attribute that provides the id of a sensor. The spatiotemporal attributes \texttt{X}, \texttt{Y} and \texttt{T} provide the time and place of the sensor measurements. The measurement attributes \texttt{co} and \texttt{no2} provide the values of CO and NO2 measured by the sensor. Note that the example assumes that the sensors are mobile, hence the same sensor may report measurements from different locations. In the interest of brevity, let us always denote with $X$, $Y$, $Z$, and $T$ the relational attributes corresponding to the three spatial and the temporal component, respectively.
+For example, consider a table \texttt{Air2(Sensor, X, Y, T, co,
+  no2)}. The \texttt{Sensor} is a metadata attribute that provides the
+id of a sensor as a natural number (we deonte the set of all natural
+numbers $N$. The spatiotemporal attributes \texttt{X}, \texttt{Y}
+and \texttt{T} provide the time and place of the sensor
+measurements. The measurement attributes \texttt{co} and \texttt{no2}
+provide the values of CO and NO2 measured by the sensor. These five
+attributes are specified by real numbers (we denote the real numbers
+by $R$).
 
-In another example, consider a table \texttt{Air1(Sensor, T, co, no2)}.
+Note that the example allows the sensors to be mobile, hence the
+same sensor may report measurements from different locations. For the
+rest of this paper we will use $X$, $Y$, $Z$, and $T$ to denote the 
+the relational attributes corresponding to the three spatial
+components and the temporal component, respectively.
 
-Let us call ${\cal D_T}$ the domain of the dimensions of the table $T$. In the running example, assuming ${\cal D}_{xyt}$ is the spatiotemporal domain that includes the 2D space and time and ${\cal S}$ is the domain of sensor id's (eg, the integers), then the users may assume that ${\cal D} = {\cal S} \times {\cal D}_{xyt}$. Alternately, the users may assume  that ${\cal D}_{desc}$ describes the dimensions included in the relevant subspace together with any range restrictions. For instance, ${\cal D}_{xy: (x-x_0)^2+(y-y_0)^2 = r^2}$ contains all 2D points within a circle centered at $(x_0, y_0)$ with radius $r$. \\
+%In another example, consider a table \texttt{Air1(Sensor, T, co, no2)}.
 
-We assume the existence of a fixed but unknown probability distribution that is characterized by the function $F: {\cal D_T} \times {\cal M_T} \mapsto [0,1]$, such that 
+We now review the central concepts of probability theory. In the next
+paragraph we will link these concepts back to the example above.
+Formally, a probability space is defined as a triplet: $\langle
+\Omega, \sigma, P  \rangle$. We now elaborate on these three elements.
+\begin{itemize}
+\item {\bf $\Omega$} The sample space is the set of all possible outcomes.
+\item {\bf $\sigma$} A set of subsets of
+  $\Omega$. By convension, these subsets are called {\em events}.~\footnote{Technically, if $\Omega$ is uncountably
+  infinite, one cannot define $P$ for {\em all} subsets of
+  $\Omega$. Instead, $P$ is defined over a collection of subsets that
+  are ``Measurable''. A full description of measurability and it's
+  relation to probability is beyond the scope of this paper.}
+\item {\bf $P$} The probability is a function from elements of
+  $\sigma$ (i.e. subsets of $\Omega$) to the segment $[0,1]$. The function $P$
+  has to obey the three axioms of probability:
+\begin{itemize}
+\item If $E \subseteq \Omega$, $P(E) \geq 0$.  
+\item $P(\Omega)=1$.
+\item If $E_1,E_2,E_3,... \subseteq \Omega$ are disjoint sets. Then 
+$$ P\left(\bigcup_{i=1}^{\infty} E_i \right)=\sum_{i=1}^{\infty}
+  P(E_i) $$
+\end{itemize}
+\end{itemize}
+
+One more concept, {\em random variables}, is needed in order to
+connect probability distributions back to tables. A random variable is
+a mapping from $\Omega$ to the real numbers (which can be restricted
+to a smaller set, such as the integers). The random variable $X$ connects
+the abstract outcome $\omega \in \Omega$ with the value of a
+particular attribute $X(\omega)$. One natural way to define the
+distribution over the table \texttt{Air2(Sensor, X, Y, T, co,
+  no2)} is to see each row as the attributes of a single outcome. In
+other words, if the outcome $\omega$ is generated according to the
+distribution $P$, the row in the table would be
+$(\mbox{Sensor}(\omega),X(\omega),Y(\omega),Z(\omega),T(\omega),\mbox{co}(\omega),\mbox{no2}(\omega))$.
+
+{\em Models} are approximations of the underlying distribution $P$.
+
+\yoav{I am not sure where to continue from here. I can see many
+  options, but we should probably talk.}
+
+Let us call ${\cal D_T}$ the domain of the dimensions of the table
+$T$. In the running example, assuming ${\cal D}_{xyt}$ is the
+spatiotemporal domain that includes the 2D space and time and ${\cal
+  S}$ is the domain of sensor id's (eg, the integers), then the users
+may assume that ${\cal D} = {\cal S} \times {\cal
+  D}_{xyt}$. Alternately, the users may assume that ${\cal D}_{desc}$
+describes the dimensions included in the relevant subspace together
+with any range restrictions. For instance, ${\cal D}_{xy:
+  (x-x_0)^2+(y-y_0)^2 = r^2}$ contains all 2D points within a circle
+centered at $(x_0, y_0)$ with radius $r$. \\
 
 \[ 
 \begin{array}{l}
