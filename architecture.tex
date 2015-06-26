@@ -87,8 +87,28 @@ rest of this paper we will use $X$, $Y$, $Z$, and $T$ to denote the
 the relational attributes corresponding to the three spatial
 components and the temporal component, respectively.
 
-
+\section{Models}
 {\em Models} are approximations of the underlying distribution $P$.
+
+There are two types of models: prediction models and compression
+models. They roughly correspond to supervised and unsupervised
+learning.
+
+\noindent{\bf Prediction Models} Prediction models operate on two
+subsets of the columns of the sample tables, we call these spaces
+input $X$ and output $Y$. A model $M$ is a mapping from $X$ to a
+prediction space $P$. The quality of the model is evaluated by
+aggregating a loss function. A loss function maps from $Y \times P$ 
+to the positive reals. Small losses correspond to a model that is a good
+representation of the sample.
+
+Aggregation of the loss can be done in several ways including average,
+max and probability of being smaller than some $\epsilon$.
+
+\noindent{\bf Model Class and Learning:} A model class is a collection
+of models that is parametrized by some parameter vector $\theta$. The
+goal of learning is to find the value of $\theta$ that minimizes the loss.
+
 
 \yoav{I am not sure where to continue from here. I can see many
   options, but we should probably talk.}
